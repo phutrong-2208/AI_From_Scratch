@@ -1,0 +1,1099 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{siunitx}
+\usepackage{tcolorbox}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+
+\renewcommand{\thesection}{\arabic{section}}
+
+\usetikzlibrary{calc}
+
+% Page Setup
+\geometry{margin=1in}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=cyan}
+
+% Header Footer
+\pagestyle{fancy}
+\fancyhf{}
+
+\lhead{\includegraphics[height=0.8cm]{Image/uni_logo_old.jpg}}
+
+\rhead{
+\begin{tabular}{r}
+University of Science \\
+Faculty of Information Technology
+\end{tabular}
+}
+
+\cfoot{\thepage}
+
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Code Snippet Styling
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+
+\lstset{
+language=C++,
+basicstyle=\ttfamily\small,
+keywordstyle=\color{blue},
+stringstyle=\color{codepurple},
+commentstyle=\color{codegreen},
+breaklines=true,
+numbers=left,
+numberstyle=\tiny\color{codegray},
+frame=single
+}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+% =====================================================
+% TITLE PAGE
+% =====================================================
+
+\begin{titlepage}
+
+\begin{tikzpicture}[overlay,remember picture]
+
+\draw [line width=2.25pt]
+($ (current page.north west) + (1,-1) $)
+rectangle
+($ (current page.south east) + (-1,1) $);
+
+\draw [line width=1pt]
+($ (current page.north west) + (1.2cm,-1.2cm) $)
+rectangle
+($ (current page.south east) + (-1.2cm,1.2cm) $);
+
+\end{tikzpicture}
+
+\begin{center}
+
+\textbf{\large VNUHCM - UNIVERSITY OF SCIENCE}
+
+\vspace{0.2cm}
+
+\textbf{\large FACULTY OF INFORMATION TECHNOLOGY}
+
+\vspace{0.8cm}
+
+\includegraphics[width=0.3\textwidth]{Image/uni_logo_old.jpg}
+
+\vspace{0.8cm}
+
+{\fontsize{36}{42}\selectfont \textbf{Research Documentation}}
+
+\vspace{0.6cm}
+
+{\Huge Note Book}
+
+\vspace{2cm}
+
+{\Large \textbf{General Information}}
+
+\vspace{0.6cm}
+
+\begin{tabular}{rl}
+
+Name: & Nguyen Phu Trong \\
+
+Student ID: & 25125067 \\
+
+\end{tabular}
+
+\vfill
+
+{\large \today}
+
+\end{center}
+
+\end{titlepage}
+
+\tableofcontents 
+
+\newpage % ================= PART ================= 
+
+\setcounter{part}{0}
+% Đảm bảo khai báo các gói này ở phần Preamble (trước \begin{document}):
+% \usepackage{amsmath, amssymb}
+% \usepackage{graphicx}
+% \usepackage{float}
+% \usepackage{enumitem}
+
+\chapter{Machine Learning}
+
+\section{Introduction}
+So, what is \textbf{Machine Learning}?
+
+\begin{quote}
+    \emph{Machine Learning is the field of study that gives computers the ability to learn without being explicitly programmed.}
+\end{quote}
+
+Based on the nature of the learning tasks, Machine Learning can be broadly categorized into three main paradigms:
+\begin{itemize}[itemsep=2pt, topsep=4pt]
+    \item \textbf{Supervised Learning}
+    \item \textbf{Unsupervised Learning}
+    \item \textbf{Reinforcement Learning}
+\end{itemize}
+
+\subsection{Supervised Learning}
+
+\paragraph{Example Problem: House Price Prediction}
+\begin{description}[style=nextline, leftmargin=1.5cm, itemsep=4pt]
+    \item[Given:] A dataset $\mathcal{D}$ containing $n$ labeled samples:
+    \begin{equation*}
+        \mathcal{D} = \left\{ \left(x^{(1)}, y^{(1)}\right), \left(x^{(2)}, y^{(2)}\right), \dots, \left(x^{(n)}, y^{(n)}\right) \right\}
+    \end{equation*}
+    \item[Task:] Given a new residence with an area of $x$ square feet, predict its corresponding price $\hat{y}$.
+\end{description}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Image/HousePricePrediction.png}
+    \caption{Illustration of the house price prediction problem.}
+    \label{fig:house_price_prediction}
+\end{figure}
+
+\subsubsection*{Regression vs. Classification}
+Depending on the nature of the target variable $y$, supervised learning problems are further divided into two main types:
+
+\begin{description}[leftmargin=0.5cm, itemsep=6pt]
+    \item[Regression:] The target variable $y \in \mathbb{R}$ is \textbf{continuous}. 
+    \newline \emph{Example:} Predicting house prices, where the output can take any real measurable value (e.g., \$2.5 billion or \$3.6 billion).
+    
+    \item[Classification:] The target label $y$ is \textbf{discrete} (categorical), taking values from a finite set $y \in \{1, 2, \dots, C\}$. 
+    \newline \emph{Example:} Predicting whether an incoming email is spam ($y = 1$) or non-spam ($y = 0$).
+\end{description}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Image/ClassificationProblem.png}
+    \caption{An example for classification problem.}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsubsection*{High-dimensional Inputs}
+
+\begin{align*}
+    x \in \mathbb{R^{$d$}} \text{ for large $d$}
+\end{align*}
+
+E.g., 
+
+\begin{align*}
+    x =\begin{bmatrix} 
+        x_1 \\ 
+        x_2 \\
+        x_3 \\ 
+        ... \\
+        ... \\
+        x_d
+    \end{bmatrix} \rightarrow y: \text{price}
+\end{align*}
+
+Where, $x_1, x_2, x_3, ..., x_d$ are the properties (living size, lot size, # floors, condition, ...)
+
+\subsubsection{Supervised Learning in Computer Vision}
+
+\begin{description}[leftmargin=0.5cm, itemsep=6pt]
+    \item [Image Classification] x = raw pixels of the image (input), y = the main object (output) 
+\end{description}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Image/ImageClassification.png}
+    \caption{ImageNet Large Scale Visual Recognition Challenge. Russkovshy et al.'2015}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsubsection{Supervised Learning with Neural Nets(Deep Learning)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/NeuralNets.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection{Unsupervised Learning}
+
+\begin{description}[style=nextline, leftmargin=1.5cm, itemsep=4pt]
+    \item[Given: ] Dataset contains \textbf{no labels}: $x^{(1)}, x^{(2)}, ..., x^{(n)}$ 
+    \item[Details: ] These data set just included input and there is no output, you just have a bunch of data and you don't know what the type of the output is. 
+\end{description}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/Supervised_And_ItsCounterpart.png}
+    \caption{Different between supervised and unsupervised through House Price Predict}
+    \label{fig:placeholder}
+\end{figure}
+\subsubsection{Large Language Models}
+
+\begin{description}
+    \item[Pretraining: ] General-purpose models learnt on unlabled, massive datasets. 
+    - transformers architecture
+    - next-word prediction loss
+    Prompting, instruction tuning, think step by step
+\end{description}
+\subsection{Reinforcement Learning}
+
+\begin{description}
+    \item[Purpose: ]
+        Learning to make  sequential decisions.
+        Train stochastic models with rewards.
+    \item[Details: ]
+        The algorithm can collect data interactively
+\end{description}
+\begin{figure}
+    \centering[H]
+    \includegraphics[width=0.8\linewidth]{Image/ReinforcementLearning.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsubsection{RL for Training LLMs}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Image/RLforLLMs.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{itemize}
+    \item Use the reward as a guidance for updating the LLM to generate better texts
+    \item RL is needed partly because the LLM generation are stochastic and thus not directly differentiable 
+\end{itemize}
+
+\section{Supervised Learning Setup}
+
+A \textbf{hypothesis} or a prediction function is function: $h:$ $X$ $\rightarrow $ $Y$
+
+\begin{itemize}
+    \item $X$ is an image, $Y$ contains "cat" or "dog".
+    \item $X$ is a text snipper, $Y$ contains "hate speech" or "not".
+\end{itemize}
+
+A \textbf{training set} is a set of pair:
+\[
+    (x^{(1)}, y^{(1)}), (x^{(2)}, y^{(2)}), ... , (x^{(n)}, y^{(n)})
+\]
+
+s.t. $x^{(i)} \in X$ and $y^{(i)} \in Y$ for i = 1, ..., n
+
+\begin{description}
+    \item[Given: ] A training set our goal is to produce a \texttt{good} prediction function $h$ 
+    
+    - Defining "good" will take us a bit. It's a modeling question!
+    
+    - We will want to use $h$ on new data not in the training set
+\end{description}
+
+
+We can define $h$ as a linear function:
+\[
+    h = \theta_0 + \theta_1x
+\]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/LinearFitonHousingData.png}
+    \label{fig:placeholder}
+\end{figure}
+
+
+So that, we are trying to minimize the different between these points to the line.
+
+Now, we add features (bedrooms and lot size) to incorporate more information about houses:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/boom.png}
+    \label{fig:placeholder}
+\end{figure}
+
+What is the prediction?
+\[
+    h(x) = \theta_0 + \theta_1x_1 + \theta_2 x_2 + \theta_3 x_3
+\]
+
+With the convention that $x_0 = 1$, we can rewrite the expression as:
+\[
+    h(x) = \sum^{3}_{i = 0} \theta_i x_i
+\]
+
+We write the vectors as (important notation):
+\begin{align*}
+    \theta = \begin{bmatrix}
+        \theta_0 \\ \theta_1 \\ \theta_2 \\ \theta_3 
+    \end{bmatrix} \text{ and } 
+    x^{(1)} = \begin{bmatrix}
+        x_0^{(1)} \\ x_1^{(1)} \\ x_2^{(1)} \\ x_3^{(1)} 
+    \end{bmatrix} 
+            = \begin{bmatrix}
+            1 \\ 2104 \\ 4 \\ 45
+    \end{bmatrix} \text{ and } y^{(1)} = 400
+\end{align*}
+
+
+We call $\theta$ \textbf{parameters}, $x^{(i)}$ is the input or the \textbf{features}, and the output or \textbf{target} $y^{(i)}$. To be clear:
+
+$(x, y)$ is a training example, and $(x^{(i)}, y^{(i)})$ is the $i^{th}$ example.
+
+\begin{description}
+    \item[Least Square: ]
+        
+        Let $h_\theta(x) = \sum^{d}_{j=0} \theta_jx_j$ want to choose $\theta$ so that $h_0 \approx y$.
+
+        The idea is: $J(\theta) = \frac{1}{2}\sum^{n}_{i = 1} (h_\theta(x^{(i)}) - y^{(i)})^2$
+
+    \item[Solving Least Square Optimization Problems: ] 
+        
+        Using Stochastic Gradient Descent for simple data:
+        
+        Define: \begin{align*}
+            h(x) &= \theta_0 + \theta_1 x \\
+            e &= \frac{1}{2}(\hat{y} - y)^2 
+        \end{align*}
+        
+        Then, \begin{equation*}
+            \frac{\partial e}{\partial\theta_0} = \frac{\partial e}{\partial y} \cdot \frac{\partial y}{\partial \theta_0} = (\hat{y}  - y) \cdot 1 = \hat{y} - y
+        \end{equation*}
+
+        \begin{equation*}
+            \frac{\partial e}{\partial\theta_1} = \frac{\partial e}{\partial y} \cdot \frac{\partial y}{\partial \theta_1} = (\hat{y}  - y) \cdot x_j
+        \end{equation*}
+        
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\linewidth]{Image/StochasticGradientDescent.cpp.png}
+            \caption{Details implementation}
+            \label{fig:placeholder}
+        \end{figure}
+\end{description}
+
+\section{Introduction to Classification}
+
+\subsection{Logistic Regression: Link Functions}
+
+\begin{description}
+    \item[Given :] A training set $\{x^{(i)}, y^{(i)}\}$ for $i = 1. ..., n$  let $y^{(i)} \in \{0, 1\}$. Want $h_\theta(x) \in [0, 1]$. Let's pick a smooth function: 
+    \[
+        h_\theta(x) = g(\theta^T x)
+    \]
+    Here $g$ is a link function. There are many ... but we'll pick one. 
+    \[
+        g(z) = \frac{1}{1 + e^{-z}}
+    \]
+    \item [How do we interpret $h(x)$ ?]:
+    
+        $P(y = 1 | x, \theta) = h_\theta(x)$ 
+
+        $P(y = 0 | x, \theta) = 1 - h_\theta(x)$
+
+    Let's write the Likelihood function: 
+    \[
+        L(\theta) = P(y | X; \theta) = \prod^{n}_{i = 1} p(y^{(i)} | x^{(i)}; \theta) = \prod^{n}_{i = 1} h_\theta(x)^{y^{(i)}} (1 - h_\theta(x))^{1 - y^{(i)}}
+    \]
+
+\end{description}
+
+\subsection{Newton's Method}
+
+\subsection{Summary}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/OptimizationMethodSummary.png}
+    \label{fig:placeholder}
+\end{figure}
+\textbf{Why Mini-batch SGD Is the Practical Standard}
+
+\begin{itemize}
+    \item \textbf{Hardware Optimization and Parallelism:} 
+    Modern linear algebra libraries and hardware accelerators (GPUs, CPUs with SIMD/AVX instruction sets) are highly optimized for matrix operations. Processing a batch of size $B \times D$ achieves superior parallel throughput, with execution latency comparable to processing an individual sample ($1 \times D$) sequentially.
+
+    \item \textbf{Faster Convergence Rate Than Batch Gradient Descent:} 
+    The model does not need to compute gradients across all $N$ samples in the dataset before executing a parameter update. Instead, parameters $\theta$ are updated iteratively after evaluating each small mini-batch of size $B$, substantially reducing wall-clock training time on large-scale datasets.
+
+    \item \textbf{Balance Between Gradient Stability and Generalization:} 
+    The batch-averaged gradient vector $g = \frac{1}{B} \sum_{i=1}^B \nabla_\theta \mathcal{L}(h_\theta(x^{(i)}), y^{(i)})$ significantly dampens the high variance and noise inherent in pure SGD ($B = 1$), producing a smoother optimization path. Simultaneously, the stochastic fluctuations across successive mini-batches inject sufficient variance to escape saddle points and suboptimal local minima.
+\end{itemize}
+
+\section{Exponential Family \& GLMs Classification}
+
+This section focuses on proofs; therefore, I will refer back to it whenever I need further clarification or deeper insight into this field.
+
+\section{Generative Learning Algorithms}
+
+
+\section{Bias, Variance, Regularization, and Model Selection}
+
+\subsection{Fundamental Tension - Overfit and Underfit}
+
+\textbf{A central question in ML: } given a finite, noisy sample, how do we pick a model that will generalize?
+
+\begin{description}
+    \item[The setup: ] We never see the True Function
+
+    There is a true function (say $h_\theta(x) = \theta_2x^2 + \theta_1 x + \theta_0$) that generates the world. We never see it. We see a finite set of noisy samples:
+    \[
+        y^{(i)} = h_\theta(x^{(i)}) + \varepsilon^{(i)}
+    \]
+    
+\end{description}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/setup.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{tcolorbox}[
+    colback=gray!5,
+    colframe=gray!70!black,
+    arc=3mm,
+    boxrule=0.8pt,
+    left=5mm,
+    right=5mm,
+    top=3mm,
+    bottom=3mm
+]
+Every fresh dataset $S$ is a different set of points.
+We should judge our model across all the datasets
+we could have seen.
+\end{tcolorbox}
+
+\begin{description}
+    \item[Three Different Samples $S^{(1)}, S^{(2)}, S^{(3)}$: ] Same true function. Three independent draws of the training data.  
+\end{description}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/ThreeDifferentSamples.png}
+    % \caption{Caption}
+    \label{fig:placeholder}
+\end{figure}
+
+We will try to fit the same model class to each one and see how much the fit changes.
+
+\begin{description}
+    \item[Fit a line: ] Too simple 
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{Image/aline.png}
+        \label{fig:placeholder}
+    \end{figure}
+
+    \item [High bias/ underfit. ] Fix: use a more expressive model class.
+\end{description}
+
+
+\begin{description}
+    \item[Fit a High Degree Polynomial: ] Too flexible
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{Image/highpoly.png}
+        \label{fig:placeholder}
+    \end{figure}
+
+    \item [High bias / ovefit .] Fix: use a less expressive class with lower variance
+\end{description}
+
+\begin{description}
+    \item[Fit a Quadratic: ] Just right
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{Image/quadratic.png}
+        % \caption{Caption}
+        \label{fig:placeholder}
+    \end{figure}
+
+    \item [The fits: ] similar across samples and stay close to the data.
+
+    \item [Takeaway: ] It fits! The "right" model class balances expressiveness against sensitivity to the particular sample we drew
+\end{description}
+
+\subsection{Training vs. Test Error as We Change Complexity}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/error.png}
+    % \caption{Caption}
+    \label{fig:placeholder}
+\end{figure}
+
+Test error = $\text{bias}^2$ + variance + error. Training error sits below.
+
+\begin{tcolorbox}[
+    colback=gray!5,
+    colframe=gray!70!black,
+    arc=3mm,
+    boxrule=0.8pt,
+    left=5mm,
+    right=5mm,
+    top=3mm,
+    bottom=3mm
+]
+Model selection must minimize \textbf{expected test error}, not training error.
+\end{tcolorbox}
+
+\subsection{Same story in classification}
+
+This is not regression-only phenomenon. In classification, an overfit decision surface is a wiggly boundary that  perfectly separates the training points but generalizes poorly
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/classification.png}
+    \caption{Caption}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection{The Bias - Variance Decomposition}
+
+Bias--Variance Decomposition helps us understand
+the sources of prediction error by separating
+the expected squared error into three components:
+
+\[
+\mathbb{E}[(Y-\hat{f}(x))^2]
+=
+\underbrace{\operatorname{Bias}^2}_{\text{Systematic Error}}
++
+\underbrace{\operatorname{Variance}}_{\text{Model Sensitivity}}
++
+\underbrace{\sigma^2}_{\text{Irreducible Noise}}.
+\]
+
+It explains why a model may fail to generalize:
+high bias leads to underfitting, while high variance
+is associated with overfitting.
+
+The goal is to understand the tradeoff between
+bias and variance and minimize the expected
+prediction error on unseen data.
+
+\subsection{From Bias--Variance Decomposition to Fixes}
+
+\subsubsection{Regularization}
+
+Regularization refers to techniques used to reduce
+overfitting and improve generalization by constraining
+the effective complexity of a model.
+
+A common approach is to add a penalty term to
+the training loss:
+
+\[
+\mathcal{L}_{\text{total}}
+=
+\mathcal{L}_{\text{train}}
++
+\lambda \Omega(\theta),
+\]
+
+where $\Omega(\theta)$ is a regularization penalty
+and $\lambda$ controls its strength.
+
+Regularization typically reduces variance at the
+cost of introducing some additional bias.
+
+\subsubsection{From Decomposition to Fixes}
+
+The bias--variance decomposition motivates two
+important techniques:
+
+\begin{enumerate}
+    \item \textbf{Dev / Holdout Set:}
+    A separate validation dataset provides an
+    empirical estimate of generalization error.
+    It captures the combined effects of bias,
+    variance, and irreducible noise without
+    measuring them individually.
+
+    \item \textbf{Regularization:}
+    By restricting model flexibility,
+    regularization can reduce variance and
+    prevent overfitting, potentially at the
+    cost of increased bias.
+\end{enumerate}
+
+\subsubsection{Modern Overparameterized Models}
+
+Classical intuition suggests that increasing model
+complexity eventually increases variance and
+test error.
+
+However, modern overparameterized models can
+achieve near-zero training error while still
+generalizing well.
+
+This behavior, sometimes associated with
+\textbf{double descent}, challenges the simple
+classical bias--variance tradeoff picture,
+although the decomposition itself remains valid
+under its assumptions.
+
+\section{Neural Networks 1}
+
+\textbf{Continuing with the Housing Price Prediction Problem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/nonlinearHousingPricePrediction.png}
+    \caption{Housing Price Prediction Dataset}
+    \label{fig:housing_price_prediction}
+\end{figure}
+
+Our goal is to find a hypothesis function $h_\theta(x)$ that accurately captures the underlying relationship between the input features and housing prices. However, a linear model may fail to capture the nonlinear patterns in the dataset, resulting in underfitting. Therefore, we will explore nonlinear models to better fit the data.
+
+Consider the function:
+\[
+    max\{t + wb, 0 \}  + c
+\]
+
+or
+
+\[
+    \mathrm{ReLU}(x) + c
+\]
+
+This is the best suit for the dataset.
+
+Now, let's try it with a higher dimension. Suppose we have data with dimension $d$
+
+\begin{description}
+    \item[Given: ] Dataset
+    
+    $x \in \mathbb{R}^d$
+    
+    $w \in \mathbb{R}^d (\text{weight vector})$ 
+
+    $b \in \mathbb{R}$ (\text{bias})
+
+    \item[Defined Model: ] $h_\theta(x) = \mathrm{ReLU}(w^Tx + b) \in \mathbb{R}$ (single neuron) 
+    
+\end{description}
+
+The main idea of a neural network is to learn useful nonlinear representations of the input data and combine them to make predictions.
+
+Consider a neural network with three hidden neurons:
+
+\[
+\begin{aligned}
+a_1 &= \operatorname{ReLU}(w_1^T x + b_1) \\
+a_2 &= \operatorname{ReLU}(w_2^T x + b_2) \\
+a_3 &= \operatorname{ReLU}(w_3^T x + b_3)
+\end{aligned}
+\]
+
+Each neuron learns a nonlinear feature representation of the input. These features are then combined linearly at the output layer:
+
+\[
+\boxed{
+h_\theta(x) = v_1a_1 + v_2a_2 + v_3a_3 + c
+}
+\]
+
+Although the output is a linear combination of the learned features, the overall model remains nonlinear with respect to the input $x$.
+
+\subsubsection{Why Neural Networks?}
+
+Unlike linear regression, which directly combines input features, neural networks automatically learn useful feature representations through training.
+
+\begin{itemize}
+    \item \textbf{Feature Learning:} Hidden neurons learn useful representations of the input data.
+    
+    \item \textbf{Nonlinearity:} Activation functions allow the network to capture complex nonlinear relationships.
+    
+    \item \textbf{Feature Combination:} The output layer combines learned features to produce predictions.
+    
+    \item \textbf{Training:} Weights and biases are optimized using backpropagation and gradient-based optimization.
+\end{itemize}
+
+\textbf{Note:} A neuron does not necessarily represent a single interpretable feature. Multiple neurons may learn overlapping or distributed representations.
+
+For deeper neural networks, multiple layers progressively transform and combine learned features:
+
+\[
+\boxed{
+\text{Input} \rightarrow
+\text{Feature Learning} \rightarrow
+\text{Feature Combination} \rightarrow
+\text{Prediction}
+}
+\]
+
+
+\subsection{Back Propagation}
+
+\[
+    max(t, 0) = \text{relu} (t)
+\]
+
+\begin{description}
+    \item[SGD: ]  
+
+    \[
+        J(\theta) = \frac{1}{n} \sum_{i = 1}^n J^{(i)}(\theta)
+    \]
+
+ And a loss function
+    \[
+        l_{cross\_entry} (h_\theta(x^{(i)}), y^{(i)})
+    \]
+
+    \[
+        \theta = \theta_0 - \eta \nabla J^{(i_k)}(\theta)
+    \]
+
+ The main idea of back propagation is focusing on how we calculate $\nabla J^{(i_k)}(\theta)$ efficiently
+\end{description}
+
+
+\begin{description}
+    \item[Differentiable Circuit / Network:]
+    A differentiable circuit is a directed acyclic graph (DAG)
+    consisting of:
+    \begin{itemize}
+        \item \textbf{Input nodes:} Variables $x_1, x_2, \ldots, x_l$.
+        \item \textbf{Operation nodes:} Differentiable operations
+        such as addition, multiplication, and activation functions.
+        \item \textbf{Edges:} Connections that represent the flow
+        of values between operations.
+        \item \textbf{Output node:} The final computed value $f(x)$.
+    \end{itemize}
+
+    \textbf{Circuit vs. Expression:}
+    The key difference is that a circuit can reuse intermediate
+    results, while an expression tree may need to recompute
+    or repeat the same subexpression multiple times.
+
+    Therefore, a circuit can represent certain computations
+    more efficiently than an expression tree.
+\end{description}
+
+
+\begin{description}
+    \item[Theorem: ] (informal)
+
+        Suppose a differentiable circuit of size $N$ (size means how many operations you have) computes a real-valued function  $f: \mathbb{R}^l \rightarrow \mathbb{R}$. Then, the gradient $\nabla f(x) \in \mathbb{R}^l$ can also be computed in time $O(N)$ by a circuit of size $O(N)$
+\end{description}
+
+
+\begin{description}
+    \item[Backpropagation:]
+    Backpropagation computes gradients efficiently by
+    applying the \textbf{Chain Rule} backward through
+    a computational graph.
+
+    \textbf{Matrix Form of the Chain Rule:}
+
+    Suppose $J$ depends on intermediate variables
+    $a_1,\ldots,a_m$, which depend on $z_1,\ldots,z_n$.
+
+    \[
+    \underbrace{
+    \begin{bmatrix}
+        \frac{\partial J}{\partial z_1} &
+        \cdots &
+        \frac{\partial J}{\partial z_n}
+    \end{bmatrix}
+    }_{\text{Gradient w.r.t. } \mathbf z}
+    =
+    \underbrace{
+    \begin{bmatrix}
+        \frac{\partial J}{\partial a_1} &
+        \cdots &
+        \frac{\partial J}{\partial a_m}
+    \end{bmatrix}
+    }_{\text{Upstream Gradient}}
+    \underbrace{
+    \begin{bmatrix}
+        \frac{\partial a_1}{\partial z_1} & \cdots &
+        \frac{\partial a_1}{\partial z_n}\\
+        \vdots & \ddots & \vdots\\
+        \frac{\partial a_m}{\partial z_1} & \cdots &
+        \frac{\partial a_m}{\partial z_n}
+    \end{bmatrix}
+    }_{\text{Local Jacobian}}
+    \]
+
+    In compact notation (row-vector convention):
+    \[
+        \boxed{
+        \frac{\partial J}{\partial \mathbf z}
+        =
+        \frac{\partial J}{\partial \mathbf a}
+        \frac{\partial \mathbf a}{\partial \mathbf z}
+        }
+    \]
+
+    \textbf{Key Idea:}
+    The gradient of each variable is obtained by
+    multiplying the upstream gradient by the local
+    Jacobian. Backpropagation applies this operation
+    repeatedly in reverse order, reusing intermediate
+    gradients instead of computing each derivative
+    independently.
+\end{description}
+
+\chapter{Deep Learning for Computer Vision}
+
+
+\section{Image Classification with Linear Classifiers}
+
+\subsection{Image Classification: A core task in Computer Vision}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/WhatComputerSee.png}
+    \label{fig:placeholder}
+\end{figure}
+
+Image are often define as matrices of data, each of pixels value are between $[0, 255]$
+
+\subsection{Nearest Neighbor Classifiers}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/FirstClassifer.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{description}
+    \item[Distance Metrics to compare images: ] L1 distances: 
+    \[
+        d_1(I_1, I_2) = \sum_{p} |I_1^p - I_2^p|
+    \]
+\end{description}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/Metrics.png}
+    \label{fig:placeholder}
+\end{figure}
+
+The implementation for the prediction:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/Implementation.png}
+    \caption{Caption}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection{K-Nearest Neighbors}
+
+Instead of copying the label from the nearest neighbor, take the majority vote from $K$ closest points
+
+\begin{description}
+    \item[Distance Metrics: ] L2 distances:
+    \[
+        d_2(I_1, I_2) = \sqrt{\sum_p (I^p_1 - I^p_2)^2} 
+    \]
+    \item[Hyperparameters: ] What
+
+    is the best value of $k$ to use?
+
+    is the best distance to use?
+    
+\end{description}
+
+\subsection{Linear Classifier}
+
+A Linear Classifier is one of the fundamental and most important models in Machine Learning and Computer Vision. It uses a linear function to map input data to class scores.
+
+The general formula of a linear classifier is defined as:
+\begin{equation}
+    f(x, W) = Wx + b
+\end{equation}
+
+Where the components are:
+\begin{itemize}
+    \item \textbf{$x$ (Input):} An input vector representing the data (e.g., an image).
+    \item \textbf{$W$ (Weights / Parameters):} The weight matrix that determines the importance of input features for each class.
+    \item \textbf{$b$ (Bias):} A bias vector that shifts the decision boundary independently of the input data $x$.
+    \item \textbf{$f(x, W)$ (Class Scores):} A vector containing predicted scores for each class. A higher score indicates higher confidence that the data belongs to that class.
+\end{itemize}
+
+To deeply understand the nature of a linear classifier, we examine it through 3 viewpoints:
+
+\begin{enumerate}
+    \item \textbf{Algebraic Viewpoint:}
+    The core operation is a matrix multiplication between the weights $W$ and the input vector $x$, followed by adding the bias $b$ to compute independent scores for each class.
+    
+    \item \textbf{Visual Viewpoint:}
+    Each row of the weight matrix $W$ acts as a \textbf{"template"} representing a class. The score is effectively a measure of similarity between the input image $x$ and that class's template.
+    
+    \item \textbf{Geometric Viewpoint:}
+    From a geometric perspective, a linear classifier partitions the feature space into regions using \textbf{hyperplanes} to separate different data classes.
+\end{enumerate}
+
+\section{Regularization and Optimization}
+
+\subsection{Regularization}
+
+We have the following loss function:
+\[
+    L(W) = \frac{1}{N} \sum_{i = 1}^{N}L_i(f(x_i, W), y_i)
+\]
+
+\textbf{Data loss:} Model predictions should match training data
+
+However, the loss function included another component:
+\[
+    L(W) = \frac{1}{N} \sum_{i = 1}^{N}L_i(f(x_i, W), y_i) + \lambda R(W)
+\]
+
+\textbf{Regularization: } Prevent the model from doing \texttt{too well} on data.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/REgulazationIntuition.png}
+    \caption{Caption}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{description}
+    \item[L2 Regularization (Ridge):] 
+    Penalty term formula[cite: 2]:
+    \begin{equation}
+        R(W) = \sum_k \sum_l W_{k,l}^2
+    \end{equation}
+    \textit{Characteristics:} Computes the sum of squared elements in the weight matrix $W$[cite: 2]. Heavily penalizes large weights, driving them to distribute evenly and approach zero without ever becoming exactly zero, resulting in a smoother model.
+
+    \item[L1 Regularization (Lasso):] 
+    Penalty term formula[cite: 2]:
+    \begin{equation}
+        R(W) = \sum_k \sum_l |W_{k,l}|
+    \end{equation}
+    \textit{Characteristics:} Computes the sum of absolute values of elements in the weight matrix $W$[cite: 2]. Tends to drive less important weights to \textbf{exactly zero}, facilitating feature selection and producing a sparse model.
+
+    \item[Elastic Net (L1 + L2):] 
+    Combined formula[cite: 2]:
+    \begin{equation}
+        R(W) = \sum_k \sum_l (\beta W_{k,l}^2 + |W_{k,l}|)
+    \end{equation}
+    \textit{Characteristics:} Combines the advantages of both L1 and L2 via a coefficient $\beta$[cite: 2], offering strong feature selection capabilities while maintaining stability when features are highly correlated.
+\end{description}
+
+\subsection{Optimization}
+
+First of all, we have 3 main variants of optimization methods:
+
+\begin{enumerate}
+    \item \textbf{Standard SGD (Stochastic Gradient Descent):} Updates weights based on individual data samples.
+    \item \textbf{Batch Gradient Descent:} Computes gradients using the entire dataset in each iteration.
+    \begin{quote}
+        \textit{Note:} Since Standard SGD and Batch SGD were already covered in Machine Learning, we will focus a bit more on the next improvement.
+    \end{quote}
+    \item \textbf{SGD + Momentum:} An improved method that accelerates convergence and helps bypass local minima or saddle points by integrating inertia from previous steps.
+\end{enumerate}
+
+\subsubsection{Focusing on: SGD + Momentum}
+The mathematical formula describing the weight update process in SGD + Momentum:
+\begin{align}
+    v_{t} &= \gamma v_{t-1} + \eta \nabla L(W_t) \\
+    W_{t+1} &= W_t - v_t
+\end{align}
+
+Where the components are:
+\begin{description}
+    \item[$v_t$:] The velocity vector at step $t$, which retains the movement trend from previous steps.
+    \item[$\gamma$:] The momentum coefficient (typically set to values like $0.9$ or $0.99$).
+    \item[$\eta$:] The learning rate.
+    \item[$\nabla L(W_t)$:] The gradient of the loss function at the current weights $W_t$.
+\end{description}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/sgdmomentum.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsubsection{More complex optimizers: RMSProp}
+
+Currently, I find it is not necessary to learn this method. However, it would be useful in the future when I try to optimize my model, and so on. So, I will note here but not completely understand this expression. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/RMSProp.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection{Optimizers: Adam(almost)}
+
+This is the most popular optimizers in deep learning field.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Image/Adam.png}
+    \caption{Implementation of the Optimzier}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsubsection{Learning Rate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Image/lrdecay.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{description}
+    \item[Step: ] Reduce learning rate at a few fixed points. E.g. for ResNets, multiply LR by $0.1$ after epochs 30, 60, and 90.
+
+    \begin{itemize}
+        \item \textbf{Cosine} $\alpha_t = \frac{1}{2}\alpha_0 (1 + \cos(t\pi/T))$
+
+        \item \textbf{Linear} $\alpha_t = \alpha_0(1 - t/T)$
+
+        \item \textbf{Inverse sqrt} $\alpha_t = \alpha/\sqrt t$
+    \end{itemize}
+
+    In which: 
+    \[
+        \alpha_0: \text{ Initial Learning Rate} \\
+        \alpha_t: \text{ Learning rate at epoch t} \\
+        T: \text{ Total number of epochs}
+    \]
+\end{description}
+
+\section{Better Visual in Backpropagation and Neural Network}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/vectorderivate.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection{Backpropagation with Vector}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Image/backpropwvector.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\section{Image Classification with CNNs}
+
+
+
+\end{document}
