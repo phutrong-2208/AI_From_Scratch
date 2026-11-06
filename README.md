@@ -1,11 +1,11 @@
 # AI From Scratch
 
-Notebook cá nhân ghi lại quá trình tự học **Machine Learning**, **Deep Learning** và **Computer Vision** của mình. Mình lưu lại kiến thức, công thức và tự cài đặt các thuật toán từ đầu để hiểu rõ cách chúng hoạt động.
+My personal notebook documenting my learning journey in **Machine Learning**, **Deep Learning**, and **Computer Vision**. It contains notes, mathematical foundations, and algorithms I implement from scratch to understand how they work.
 
-## Nội dung hiện tại
+## Current Contents
 
-- [`Notebook.tex`](Notebook.tex): ghi chép lý thuyết bằng LaTeX.
-- [`StochasticGradientDescent.cpp`](src/MachineLearning/StochasticGradientDescent.cpp): hồi quy tuyến tính với Stochastic Gradient Descent.
-- [`NeuralNetwork.cpp`](src/MachineLearning/NeuralNetwork.cpp): mạng neural một lớp ẩn, huấn luyện bằng backpropagation với ví dụ XOR.
+- [`Notebook.tex`](Notebook.tex): theoretical notes written in LaTeX.
+- [`StochasticGradientDescent.cpp`](src/MachineLearning/StochasticGradientDescent.cpp): linear regression using Stochastic Gradient Descent.
+- [`NeuralNetwork.cpp`](src/MachineLearning/NeuralNetwork.cpp): a neural network with one hidden layer, trained using backpropagation on the XOR problem.
 
-Nội dung sẽ được bổ sung dần trong quá trình học. Repository chỉ lưu mã nguồn và ghi chép; các file PDF và file sinh ra khi biên dịch được bỏ qua.
+I will keep adding notes and implementations as I learn. This repository contains source code and notes; PDF files and build artifacts are excluded.
