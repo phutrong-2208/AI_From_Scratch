@@ -4,12 +4,12 @@
 using namespace std;
 
 ///Hyperparameters
-const double lr = 0.05;
-const int INPUT_SIZE = 4;
-const int HIDDEN_SIZE = 8;
-const int OUTPUT_SIZE = 1;
-const int EPOCHS = 500;
-const int BATCH_SIZE = 32;
+const double lr = 0.1;
+const int INPUT_SIZE = 16;
+const int HIDDEN_SIZE = 32;
+const int OUTPUT_SIZE = 26;
+const int EPOCHS = 100;
+const int BATCH_SIZE = 128;
 const int SEED = 1;
 
 
@@ -25,66 +25,82 @@ struct Dataset{
 };
 
 
-int labelIndex(const string &species){
-    if(species == "Iris-setosa") return 0;
-    if(species == "Iris-versicolor") return 1;
-    if(species == "Iris-virginica") return 2;
-    throw runtime_error("Unknown species: " + species);
+string trim(const string& value) {
+    size_t first = value.find_first_not_of(" \t\r\n");
+    if (first == string::npos) return "";
+    size_t last = value.find_last_not_of(" \t\r\n");
+    return value.substr(first, last - first + 1);
 }
 
-filesystem::path defaultDatasetPath() {
+int labelIndex(const string& letter) {
+    if (letter.size() != 1 || letter[0] < 'A' || letter[0] > 'Z') {
+        throw runtime_error("Expected a letter label from A to Z: " + letter);
+    }
+    return letter[0] - 'A';
+}
+
+filesystem :: path defaultDatasetPath() {
     // Relative paths are resolved from the working directory, not this source file.
-    filesystem::path directory = filesystem::current_path();
+    filesystem :: path directory = filesystem::current_path();
     while (true) {
-        filesystem::path candidate = directory / "dataset" / "iris" / "iris.data";
-        if (filesystem::is_regular_file(candidate)) return candidate;
-        filesystem::path parent = directory.parent_path();
+        filesystem :: path candidate = directory / "dataset" / "LetterRegconition" / "letter-recognition.data";
+        if (filesystem :: is_regular_file(candidate)) return candidate;
+        filesystem :: path parent = directory.parent_path();
         if (parent == directory) break;
         directory = parent;
     }
-    throw runtime_error("Cannot find dataset/iris/iris.data from working directory: "
+    throw runtime_error("Cannot find dataset/LetterRegconition/letter-recognition.data from working directory: "
                         + filesystem::current_path().string()
                         + ". Run inside the project or pass the dataset path as an argument.");
 }
 
 Dataset loadDataset(const string& filename) {
+    const int featureCount = 16;
     ifstream file(filename);
 
     if (!file.is_open()) {
-        throw runtime_error("Cannot open file: " + filesystem::absolute(filename).string());
+        throw runtime_error("Cannot open file: " + filesystem :: absolute(filename).string());
     }
 
     Dataset dataset;
     string line;
 
+    size_t lineNumber = 0;
     while (getline(file, line)) {
+        ++lineNumber;
+        line = trim(line);
         if (line.empty()) continue;
 
-        stringstream ss(line);
-        string value;
-        Vector features;
-
-        // Read 4 numerical features
-        for (int i = 0; i < 4; ++i) {
-            if (!getline(ss, value, ',')) {
-                throw runtime_error("Invalid data row");
+        try {
+            stringstream ss(line);
+            string value;
+            vector<string> fields;
+            while (getline(ss, value, ',')) fields.push_back(trim(value));
+            if (fields.size() != featureCount + 1 || line.back() == ',') {
+                throw runtime_error("Expected a letter label followed by 16 numerical features");
             }
 
-            features.push_back(stod(value));
+            int label = labelIndex(fields[0]);
+            Vector features;
+            features.reserve(featureCount);
+            for (int i = 0; i < featureCount; ++i) {
+                size_t consumed = 0;
+                double feature = stod(fields[i + 1], &consumed);
+                if (consumed != fields[i + 1].size() || !isfinite(feature)
+                    || feature < 0 || feature > 15 || floor(feature) != feature) {
+                    throw runtime_error("Feature " + to_string(i + 1) + " must be an integer from 0 to 15");
+                }
+                features.push_back(feature);
+            }
+
+            dataset.X.push_back(features);
+            dataset.y.push_back(label);
+        } catch (const exception& e) {
+            throw runtime_error("Invalid data at line " + to_string(lineNumber) + ": " + e.what());
         }
-
-        // Read species name
-        string species;
-        getline(ss, species);
-
-        if (!species.empty() && species.back() == '\r') {
-            species.pop_back();
-        }
-
-        dataset.X.push_back(features);
-        dataset.y.push_back(labelIndex(species));
     }
 
+    if (file.bad()) throw runtime_error("Error reading dataset: " + filename);
     if (dataset.X.empty()) {
         throw runtime_error("Dataset is empty: " + filename);
     }
@@ -193,17 +209,17 @@ public:
         b1(hidden, 0.0f), b2(output, 0.0f){
 
         mt19937 rng(42);
-        normal_distribution<double> dist(0.0f, 2.0f);
-
+        normal_distribution<double> dist_1(0.0, sqrt(2.0 / inputSize));
+        normal_distribution<double> dist_2(0.0, sqrt(2.0 / hiddenSize));
 
         for (int i = 0; i < inputSize; ++i){
             for (int j = 0; j < hiddenSize; ++j){
-                W1[i][j] = dist(rng);
+                W1[i][j] = dist_1(rng);
             }
         }
         for (int i = 0; i < hiddenSize; ++i){
             for (int j = 0; j < outputSize; ++j){
-                W2[i][j] = dist(rng);
+                W2[i][j] = dist_2(rng);
             }
         }
     }
@@ -250,7 +266,7 @@ public:
 
 
     Matrix forward(const Matrix& X){
-        Z1 = addBias(X * W1, b1); //--> (2, 4) x (4, 8) (2, 8)
+        Z1 = addBias(X * W1, b1);
         A1 = ReLU(Z1);
 
         Matrix Z2 = addBias(A1 * W2, b2);
@@ -334,7 +350,7 @@ public:
         for (int epoch = 0; epoch < EPOCHS; ++epoch){
             shuffle(ord.begin(), ord.end(), rng);
 
-            for (int batch = 0; batch <= n_samples; batch += BATCH_SIZE){
+            for (int batch = 0; batch < n_samples; batch += BATCH_SIZE){
                 int l = batch;
                 int r = min(batch + BATCH_SIZE, n_samples);
 
@@ -350,7 +366,7 @@ public:
             }
 
 
-            if((epoch + 1) % 50 == 0 || epoch == 0){
+            if(1){
                 Matrix prediction = forward(X);
 
                 double loss = crossEntropy(prediction, Y);
@@ -380,27 +396,58 @@ double accuracy(const Matrix& X, const vector<int>& label, NeuralNetwork &model)
     return (double)correctness / (double)X.size();
 }
 
+//Spliting the dataset into two sets: Training Dataset and Test Dataset
+
+pair<Dataset, Dataset> split(Dataset big, int numTrain){
+    if(big.X.size() < numTrain){
+        throw invalid_argument("Invalid training datas size");
+    }
+
+    Dataset trainSet;
+    Dataset testSet;
+
+    for (int i = 0; i < numTrain; ++i){
+        trainSet.X.emplace_back(big.X[i]);
+        trainSet.y.emplace_back(big.y[i]);
+    }
+    for (int i = numTrain; i < big.X.size(); ++i){
+        testSet.X.emplace_back(big.X[i]);
+        testSet.y.emplace_back(big.y[i]);
+    }
+
+    return make_pair(trainSet, testSet);
+}
+
 int main(int argc, char* argv[]){
     try{
+        if (argc > 2) throw invalid_argument("Usage: ImageClassification.exe [dataset_path]");
         filesystem :: path datasetPath = argc > 1 ? filesystem::path(argv[1]) : defaultDatasetPath();
         Dataset data = loadDataset(datasetPath.string());
 
+        cout << "Dataset: " << datasetPath.string() << '\n';
         cout << "Sample: " << data.X.size() << '\n';
         cout << "Features: " << data.X[0].size() << '\n';
+        cout << "Classes: 26 (A-Z)\n";
 
         cout << "First sample: [";
         for (size_t i = 0; i < data.X[0].size(); ++i) {
             if (i > 0) cout << ", ";
             cout << data.X[0][i];
         }
-        cout << "]\n";
-
-        NeuralNetwork model(4, 32, 3);
+        cout << "] | Label: " << char('A' + data.y[0]) << '\n';
 
 
-        model.train(data.X, data.y);
+        pair<Dataset, Dataset> spl = split(data, 16000);
 
-        cout << "Accuracy of Training Data: " << accuracy(data.X, data.y, model) * 100 << "% \n";
+        Dataset trainSet = spl.first;
+        Dataset testSet = spl.second;
+//        cout << trainSet.X.size() << ' ' << testSet.X.size() << '\n';
+//        cout << trainSet.y.size() << ' ' << testSet.y.size() << '\n';
+
+        NeuralNetwork model(INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE);
+        model.train(trainSet.X, trainSet.y);
+        cout << "Accuracy of Training Data: " << accuracy(trainSet.X, trainSet.y, model) * 100 << "% \n";
+        cout << "Accuracy of Testing Data: " << accuracy(testSet.X, testSet.y, model) * 100 << "% \n";
     }
     catch (const exception& e){
         cerr << e.what() << '\n';
